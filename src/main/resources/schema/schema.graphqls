@@ -2,6 +2,11 @@ type Query {
     getShows(titleFilter: String): [Show]
 }
 
+type Mutation {
+    addShow(title: String!, releaseYear: Int!): Show
+    deleteShow(title: String!): Boolean
+}
+
 type Show {
     title: String
     releaseYear: Int
