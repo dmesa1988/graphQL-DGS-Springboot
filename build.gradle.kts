@@ -24,9 +24,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
 	implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
-	testImplementation("io.kotest:kotest-runner-junit5:5.1.0")
-	testImplementation("io.kotest:kotest-assertions-core:5.1.0")
-	testImplementation("io.kotest:kotest-property:5.1.0")
+	testImplementation("io.kotest:kotest-runner-junit5-jvm:4.4.3")
+	testImplementation("io.kotest:kotest-assertions-core-jvm:4.4.3")
+	testImplementation("io.kotest:kotest-extensions-junitxml:4.4.3")
+	testImplementation("io.kotest:kotest-extensions-spring-jvm:4.4.3")
+	testImplementation("io.kotest:kotest-property-jvm:4.4.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

@@ -1,3 +1,5 @@
+package com.example.demodmesa
+
 import com.example.demodmesa.datafetchers.ShowsDataFetcher
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
@@ -8,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest(classes = [DgsAutoConfiguration::class, ShowsDataFetcher::class])
-private class KotestTest: DescribeSpec(){
+private class KotestTestJS: DescribeSpec(){
     @Autowired
     lateinit var dgsQueryExecutor: DgsQueryExecutor
     init{
         describe("Shows") {
             it("") {
                 val titles : List<String> = dgsQueryExecutor.executeAndExtractJsonPath(
-                """
+                    """
                     {
                         getShows {
                             title
@@ -24,16 +26,9 @@ private class KotestTest: DescribeSpec(){
                     }
                 """.trimIndent(), "data.getShows[*].title")
                 titles.size shouldBeGreaterThan 0
-                titles shouldContain "Ozark"
+                titles shouldContain "Ozark5"
             }
 
-            it("") {
-                // test here
-            }
-
-            it("") {
-                // test here
-            }
         }
     }
 }
