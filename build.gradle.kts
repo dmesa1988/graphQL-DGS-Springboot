@@ -7,6 +7,7 @@ plugins {
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
 	jacoco
+
 }
 
 group = "com.example"
@@ -30,6 +31,7 @@ dependencies {
 	testImplementation("io.kotest:kotest-extensions-spring-jvm:4.4.3")
 	testImplementation("io.kotest:kotest-property-jvm:4.4.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.karumi.kotlinsnapshot:plugin:2.2.3")
 }
 
 jacoco {
