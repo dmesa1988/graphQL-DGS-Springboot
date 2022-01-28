@@ -1,5 +1,6 @@
 package com.example.demodmesa.datafetchers
 
+import com.example.demodmesa.types.Show
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsMutation
 import com.netflix.graphql.dgs.DgsQuery
@@ -18,7 +19,7 @@ class ShowsDataFetcher {
     @DgsQuery
     fun getShows(@InputArgument titleFilter : String?): List<Show> {
         return if(titleFilter != null) {
-            shows.filter { it.title.lowercase().contains(titleFilter.lowercase()) }
+            shows.filter { it.title!!.lowercase().contains(titleFilter.lowercase()) }
         } else {
             shows
         }
@@ -26,8 +27,8 @@ class ShowsDataFetcher {
 
     @DgsMutation
     fun addShow(@InputArgument title : String, releaseYear: Int): Show {
-        shows.add(Show(title, releaseYear))
-        return shows.first { it.title == title }
+        val showToInsert = Show(title,releaseYear)
+        return insertShow(showToInsert)
     }
 
     @DgsMutation
@@ -40,7 +41,12 @@ class ShowsDataFetcher {
         }
     }
 
+    fun insertShow(@InputArgument show : Show): Show{
+        shows.add(show)
+        return show
+    }
 
 
-    data class Show(val title: String, val releaseYear: Int)
+
+
 }

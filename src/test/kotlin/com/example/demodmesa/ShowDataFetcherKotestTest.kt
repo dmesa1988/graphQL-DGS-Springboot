@@ -15,7 +15,6 @@ import io.kotest.spring.SpringListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
-@Suppress("UNUSED_EXPRESSION")
 @SpringBootTest(classes = [DgsAutoConfiguration::class, ShowsDataFetcher::class])
 class ShowDataFetcherKotestTest: DescribeSpec(){
 
@@ -40,8 +39,6 @@ class ShowDataFetcherKotestTest: DescribeSpec(){
                 "data.addShow",
                 object : TypeRef<Show>() {}
             )
-
-
         }
 
         afterEach() {
