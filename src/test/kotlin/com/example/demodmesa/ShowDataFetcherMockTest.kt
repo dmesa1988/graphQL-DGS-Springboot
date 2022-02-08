@@ -1,16 +1,18 @@
 package com.example.demodmesa
 
 import com.example.demodmesa.datafetchers.ShowsDataFetcher
-import com.example.demodmesa.types.Show
+import com.example.demodmesa.generated.types.Show
 import com.jayway.jsonpath.TypeRef
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
 import com.ninjasquad.springmockk.SpykBean
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.fp.firstOption
 import io.kotest.inspectors.forAtLeastOne
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.ints.shouldBeGreaterThan
+import io.kotest.matchers.maps.haveValue
 import io.kotest.matchers.shouldBe
 import io.kotest.spring.SpringListener
 import io.mockk.clearAllMocks
@@ -32,21 +34,30 @@ class ShowDataFetcherMockTest: DescribeSpec(){
     override fun listeners() = listOf(SpringListener)
 
     init{
-        var releaseYear by Delegates.notNull<Int>()
-        var title by Delegates.notNull<String>()
-        lateinit var mockedShow:Show
+        var releaseYear_1 by Delegates.notNull<Int>()
+        var title_1 by Delegates.notNull<String>()
+        var releaseYear_2 by Delegates.notNull<Int>()
+        var title_2 by Delegates.notNull<String>()
+        lateinit var mockedShow_1:Show
+        lateinit var mockedShow_2:Show
+        lateinit var mockedShowsList: List<Show>
 
         beforeEach() {
-            title = "titanic"
-            releaseYear = 1998
-            mockedShow = Show(title, releaseYear)
+            title_1 = "Titanic"
+            releaseYear_1 = 1998
+            mockedShow_1 = Show(title_1, releaseYear_1)
+            title_2 = "Djando Unchained"
+            releaseYear_2 = 2007
+            mockedShow_2 = Show(title_2, releaseYear_2)
+            mockedShowsList = listOf(mockedShow_1,mockedShow_2)
+
             every {
-                showsDataFetcher.getShows(any())
-            } returns listOf(mockedShow)
+                showsDataFetcher.selectShow(any())
+            } returns mockedShowsList
 
             every {
                 showsDataFetcher.insertShow(any())
-            } returns mockedShow
+            } returns mockedShow_1
         }
 
         afterEach(){
@@ -56,65 +67,23 @@ class ShowDataFetcherMockTest: DescribeSpec(){
 
         describe("Shows") {
 
-            it("Should return specific show when pass a title filter") {
-                val showList: List<Show> = dgsQueryExecutor.executeAndExtractJsonPathAsObject("""
-                    {
-                        getShows (titleFilter: "$title") {
-                            title
-                            releaseYear
-                        }
-                    }
-                    """.trimIndent(), "data.getShows",
-                    object : TypeRef<List<Show>>() {})
-
-                showList.size shouldBeExactly 1
-                showList.first() shouldBe mockedShow
-            }
-
-            it("Should return all shows mapped as List<String>") {
-                val showList: List<String> = dgsQueryExecutor.executeAndExtractJsonPath(
-                    """
-                {
-                    getShows {
-                        title
-                        releaseYear
-                    }
-                }
-                """.trimIndent(), "data.getShows[*].title"
-                )
-
-                showList.size shouldBeGreaterThan 0
-                showList shouldContain title
-            }
 
             it("Should return all shows as an object") {
-                val showList: List<Show> = dgsQueryExecutor.executeAndExtractJsonPathAsObject("""
-                {
-                    getShows {
-                        title
-                        releaseYear
-                    }
-                }
-                """.trimIndent(), "data.getShows",
-                    object : TypeRef<List<Show>>() {})
+                val showList: List<Show> =showsDataFetcher.getShows("")
                 showList.forAtLeastOne {
-                    it shouldBe mockedShow
+                    it shouldBe mockedShow_1
+                }
+
+                showList.forAtLeastOne {
+                    it shouldBe mockedShow_2
                 }
             }
 
             it("Should insert new object") {
-                val show: Show = dgsQueryExecutor.executeAndExtractJsonPathAsObject("""
-                mutation {
-                    addShow(title: "$title", releaseYear:$releaseYear) {
-                        title
-                        releaseYear
-                    }
-                }
-                """.trimIndent(), "data.addShow",
-                    object : TypeRef<Show>() {})
-                show shouldBe mockedShow
-                }
+                val show: Show = showsDataFetcher.addShow(title_1,releaseYear_1)
+                show shouldBe mockedShow_1
             }
+        }
 
     }
 }

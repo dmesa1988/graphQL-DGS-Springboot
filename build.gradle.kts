@@ -7,8 +7,7 @@ plugins {
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
 	jacoco
-	id("com.adarshr.test-logger") version "3.1.0"
-
+	id("com.adarshr.test-logger") version "2.1.0"
 }
 
 group = "com.example"
@@ -45,7 +44,7 @@ tasks {
 		// List of directories containing schema files
 		// https://stackoverflow.com/a/60859378/4086981
 		schemaPaths = listOf("${projectDir}/src/main/resources/schema").toMutableList()
-		packageName = "com.example.demodmesa" // The package name to use to generate sources
+		packageName = "com.example.demodmesa.generated" // The package name to use to generate sources
 		generateClient = true // Enable generating the type safe query API
 		language = "kotlin"
 	}

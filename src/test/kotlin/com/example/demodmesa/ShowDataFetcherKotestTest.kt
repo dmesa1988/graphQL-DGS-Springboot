@@ -1,7 +1,7 @@
 package com.example.demodmesa
 
 import com.example.demodmesa.datafetchers.ShowsDataFetcher
-import com.example.demodmesa.types.Show
+import com.example.demodmesa.generated.types.Show
 import com.jayway.jsonpath.TypeRef
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
