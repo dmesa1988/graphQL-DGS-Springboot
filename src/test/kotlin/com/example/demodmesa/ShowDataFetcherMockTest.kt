@@ -2,30 +2,19 @@ package com.example.demodmesa
 
 import com.example.demodmesa.datafetchers.ShowsDataFetcher
 import com.example.demodmesa.generated.types.Show
-import com.jayway.jsonpath.TypeRef
-import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
 import com.ninjasquad.springmockk.SpykBean
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.fp.firstOption
 import io.kotest.inspectors.forAtLeastOne
-import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.ints.shouldBeExactly
-import io.kotest.matchers.ints.shouldBeGreaterThan
-import io.kotest.matchers.maps.haveValue
 import io.kotest.matchers.shouldBe
 import io.kotest.spring.SpringListener
 import io.mockk.clearAllMocks
 import io.mockk.every
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import kotlin.properties.Delegates
 
 @SpringBootTest(classes = [DgsAutoConfiguration::class, ShowsDataFetcher::class])
 class ShowDataFetcherMockTest: DescribeSpec(){
-
-    @Autowired
-    lateinit var dgsQueryExecutor: DgsQueryExecutor
 
     @SpykBean
     lateinit var showsDataFetcher: ShowsDataFetcher
